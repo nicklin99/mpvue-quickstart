@@ -5,5 +5,5 @@ module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
   ENV: '"dev"',
   staticUrl: '""',
-  baseUrl: ''
+  baseUrl: '""'
 })
