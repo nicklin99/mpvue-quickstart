@@ -115,15 +115,15 @@ module.exports = new Promise((resolve, reject) => {
       }
     
     // add nicklin 重新设置端口号，输出url
-    const staticUrl = JSON.stringify(`http://${process.env.localIP}:${newPort}/`)
-    process.env.staticUrl = config.dev.env.staticUrl = staticUrl
+    const staticUrl = `http://${process.env.localIP}:${newPort}/`
+    config.dev.env.staticUrl = JSON.stringify(staticUrl)
+    process.env.staticUrl = staticUrl
     // for mpvue-loader
     process.env.staticPublicPath = staticUrl
     var server = app.listen(newPort, '0.0.0.0', function () {
-        const host = server.address().address
         const port = server.address().port
         console.log('Local:            ', `http://localhost:${port}`)
-        console.log('On Your Network:  ', `http://${host}:${port}`)
+        console.log('On Your Network:  ', `http://${process.env.localIP}:${port}`)
       })
       // for 小程序的文件保存机制
       require('webpack-dev-middleware-hard-disk')(compiler, {
