@@ -14,6 +14,14 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
+// add nicklin 对网络静态图片资源路径做处理
+const _publicPath = JSON.parse(config[process.env.ENV].env.staticUrl)
+function publicPath(file) {
+  return _publicPath + file
+}
+// for mpvue-loader
+process.env.staticPublicPath = publicPath('')
+
 function getEntry (rootSrc) {
   var map = {};
   glob.sync(rootSrc + '/pages/**/main.js')
@@ -74,6 +82,14 @@ let baseWebpackConfig = {
         options: vueLoaderConfig
       },
       {
+        test: /\.vue$/,
+        loader: 'mpvue-config-loader',
+        exclude: [resolve('src/components')],
+        options: {
+          entry: './main.js'
+        }
+      },
+      {
         test: /\.js$/,
         include: [resolve('src'), resolve('test')],
         use: [
@@ -85,11 +101,23 @@ let baseWebpackConfig = {
         ]
       },
       {
-        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        test: /static(.*)?\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        loader: 'file-loader',
+        options: {
+          publicPath,
+          emitFile: false,
+          name: utils.assetsPath('[path][name].[ext]')
+        }
+      },
+      {
+        test: /assets(.*)?\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('img/[name].[ext]')
+          publicPath: function (file) {
+            return `/${file}`
+          },
+          name: utils.assetsPath('[path][name].[ext]')
         }
       },
       {
@@ -122,15 +150,30 @@ let baseWebpackConfig = {
       to: ''
     }], {
       context: 'src/'
-    }),
-    new CopyWebpackPlugin([
+      })
+    /* new CopyWebpackPlugin([
       {
         from: path.resolve(__dirname, '../static'),
         to: path.resolve(config.build.assetsRoot, './static'),
         ignore: ['.*']
       }
-    ])
+    ]) */
   ]
+}
+
+if (process.env.PLATFORM === 'wx') {
+  baseWebpackConfig = merge(baseWebpackConfig, {
+    plugins: [
+      new CopyWebpackPlugin([
+        {
+          from: path.resolve(__dirname, '../src/assets/tabbar'),
+          to: path.resolve(__dirname, '../dist/wx/assets/tabbar'),
+          ignore: ['.*']
+        }
+      ])
+    ]
+  })
+  
 }
 
 // 针对百度小程序，由于不支持通过 miniprogramRoot 进行自定义构建完的文件的根路径

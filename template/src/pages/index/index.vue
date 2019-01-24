@@ -1,7 +1,7 @@
 <template>
-  <div @click="clickHandle">
-
-    <div class="userinfo" @click="bindViewTap">
+  <div class="container" @click="clickHandle('test click', $event)">
+    <span>当前store.state.count: \{{count}}</span>
+    <div class="userinfo">
       <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
       <img class="userinfo-avatar" src="/static/images/user.png" background-size="cover" />
 
@@ -24,6 +24,7 @@
 
     {{#if vuex}}
     <a href="/pages/counter/main" class="counter">去往Vuex示例页面</a>
+    <div @click="$router.push('/counter')" class="counter">去往Vuex示例页面</div>
     {{/if}}
 
     <div class="all">
@@ -48,11 +49,20 @@ export default {
       }
     }
   },
-
+  computed: {
+    count{{#unless_eq lintConfig "airbnb"}} {{/unless_eq}}() {
+      return this.$store.state.count{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
+    }{{#if_eq lintConfig "airbnb"}},{{/if_eq}}
+  },
   components: {
     card
   },
+  onLoad () {
 
+  },
+  onShow () {
+
+  },
   methods: {
     bindViewTap () {
       const url = '../logs/main'

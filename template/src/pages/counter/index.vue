@@ -5,6 +5,7 @@
       <button @click="increment">+</button>
       <button @click="decrement">-</button>
     </p>
+    <div @click="$router.back()" class="home">返回首页</div>
   </div>
 </template>
 

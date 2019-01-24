@@ -1,0 +1,33 @@
+// https://vuex.vuejs.org/zh-cn/intro.html
+// make sure to call Vue.use(Vuex) if using a module system
+import Vue from 'vue'
+import Vuex from 'vuex'
+import { actionPlugin, commitPlugin } from '../packages/store/plugins'
+import wx from '../packages/store/wx.module'
+import ping from './ping'
+
+Vue.use(Vuex)
+
+const store = new Vuex.Store({
+  plugins: [
+    actionPlugin,
+    commitPlugin
+  ],
+  modules: {
+    ping,
+    wx
+  },
+  state: {
+    count: 0
+  },
+  mutations: {
+    increment (state) {
+      state.count++
+    },
+    decrement (state) {
+      state.count--
+    }
+  }
+})
+
+export default store
