@@ -43,7 +43,7 @@ module.exports = {
     // 在小程序开发者工具中不需要自动打开浏览器
     autoOpenBrowser: false,
     assetsSubDirectory: '',
-    assetsPublicPath: '/',
+    assetsPublicPath: '/static',
     proxyTable: {},
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
