@@ -42,6 +42,7 @@ export default {
     console.log('app.onLaunch.options', options)
   },
   onShow (options) {
+    this.$router.init(options)
     console.log('app.onShow.options', options)
     if (options.isLaunch) {
       console.log('小程序启动')
