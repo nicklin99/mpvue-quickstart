@@ -18,7 +18,7 @@ module.exports = {
       "type": "string",
       "required": false,
       "message": "wxmp appid",
-      "default": "touristappid"
+      "default": "wx7176af4ea0cb1f58"
     },
     "description": {
       "type": "string",

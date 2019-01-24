@@ -1,14 +1,56 @@
 <script>
+/* eslint-disable */
 export default {
-  created{{#unless_eq lintConfig "airbnb"}} {{/unless_eq}}() {
-    // 调用API从本地缓存中获取数据
-    const logs = wx.getStorageSync('logs') || []{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
-    logs.unshift(Date.now()){{#if_eq lintConfig "airbnb"}};{{/if_eq}}
-    wx.setStorageSync('logs', logs){{#if_eq lintConfig "airbnb"}};{{/if_eq}}
-
-    console.log('app created and cache logs by setStorageSync'){{#if_eq lintConfig "airbnb"}};{{/if_eq}}
-  }{{#if_eq lintConfig "airbnb"}},{{/if_eq}}
-}{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
+  // app.json app全局配置
+  config: {
+    pages: [
+      'pages/index/main',
+      'pages/request/main'{{#if vuex}},
+      'pages/counter/main'
+      {{/if}}
+    ],
+    window: {
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTitleText: 'WeChat',
+      navigationBarTextStyle: 'black'
+    },
+    tabBar: {
+      color: '#888',
+      selectedColor: '#fa654c',
+      backgroundColor: '#fff',
+      list: [{
+        "pagePath": 'pages/index/main',
+        "iconPath": 'assets/tabbar/icon-01.png',
+        "selectedIconPath": 'assets/tabbar/icon-01.png',
+        "text": '首页'
+      },
+      {
+        "pagePath": 'pages/request/main',
+        "iconPath": 'assets/tabbar/icon-01.png',
+        "selectedIconPath": 'assets/tabbar/icon-01.png',
+        "text": '网络'
+      }]
+    }
+  },
+  // 全局组件配置
+  globalConfig: {
+    usingComponents: {}
+  },
+  onLaunch (options) {
+    options.isLaunch = true
+    console.log('app.onLaunch.options', options)
+  },
+  onShow (options) {
+    console.log('app.onShow.options', options)
+    if (options.isLaunch) {
+      console.log('小程序启动')
+    } else {
+      console.log('小程序后台切前台')
+    }
+  },
+  created () {}
+}
 </script>
 
 <style>

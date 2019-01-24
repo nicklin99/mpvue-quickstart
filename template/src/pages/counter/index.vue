@@ -5,27 +5,25 @@
       <button @click="increment">+</button>
       <button @click="decrement">-</button>
     </p>
-
-    <a href="/pages/index/main" class="home">去往首页</a>
+    <div @click="$router.back()" class="home">返回首页</div>
   </div>
 </template>
 
 <script>
 // Use Vuex
-import store from './store'{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
 
 export default {
   computed: {
     count{{#unless_eq lintConfig "airbnb"}} {{/unless_eq}}() {
-      return store.state.count{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
+      return this.$store.state.count{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
     }{{#if_eq lintConfig "airbnb"}},{{/if_eq}}
   },
   methods: {
     increment{{#unless_eq lintConfig "airbnb"}} {{/unless_eq}}() {
-      store.commit('increment'){{#if_eq lintConfig "airbnb"}};{{/if_eq}}
+      this.$store.commit('increment'){{#if_eq lintConfig "airbnb"}};{{/if_eq}}
     },
     decrement{{#unless_eq lintConfig "airbnb"}} {{/unless_eq}}() {
-      store.commit('decrement'){{#if_eq lintConfig "airbnb"}};{{/if_eq}}
+      this.$store.commit('decrement'){{#if_eq lintConfig "airbnb"}};{{/if_eq}}
     }{{#if_eq lintConfig "airbnb"}},{{/if_eq}}
   }{{#if_eq lintConfig "airbnb"}},{{/if_eq}}
 }{{#if_eq lintConfig "airbnb"}};{{/if_eq}}

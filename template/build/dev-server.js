@@ -1,9 +1,27 @@
 require('./check-versions')()
 
+// add nicklin 自动获取本机ip
+function getIPAdress(){  
+  var interfaces = require('os').networkInterfaces();  
+  for(var devName in interfaces){  
+        var iface = interfaces[devName];  
+        for(var i=0;i<iface.length;i++){  
+             var alias = iface[i];  
+             if(alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal){  
+                   return alias.address;  
+             }  
+        }  
+  }  
+}
+
 process.env.PLATFORM = process.argv[process.argv.length - 1] || 'wx'
 var config = require('../config')
+
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
+  // add nicklin 附带环境信息
+  process.env.ENV = JSON.parse(config.dev.env.ENV)
+  process.env.localIP = getIPAdress()
 }
 
 // var opn = require('opn')
@@ -97,7 +115,18 @@ module.exports = new Promise((resolve, reject) => {
       if (port !== newPort) {
         console.log(`${port}端口被占用，开启新端口${newPort}`)
       }
-      var server = app.listen(newPort, 'localhost')
+    
+    // add nicklin 重新设置端口号，输出url
+    const staticUrl = JSON.stringify(`http://${process.env.localIP}:${newPort}/`)
+    process.env.staticUrl = config.dev.env.staticUrl = staticUrl
+    // for mpvue-loader
+    process.env.staticPublicPath = staticUrl
+    var server = app.listen(newPort, '0.0.0.0', function () {
+        const host = server.address().address
+        const port = server.address().port
+        console.log('Local:            ', `http://localhost:${port}`)
+        console.log('On Your Network:  ', `http://${host}:${port}`)
+      })
       // for 小程序的文件保存机制
       require('webpack-dev-middleware-hard-disk')(compiler, {
         publicPath: webpackConfig.output.publicPath,

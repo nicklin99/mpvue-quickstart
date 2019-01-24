@@ -1,4 +1,19 @@
-function formatNumber{{#unless_eq lintConfig "airbnb"}} {{/unless_eq}}(n) {
+
+export const apiSettings = {
+  baseUrl: process.env.baseUrl,
+  refreshTokenUrl: '',
+  authUrl: ''
+}
+
+export const toast = title => {
+  wx.showToast({
+    title,
+    icon: 'none',
+    duration: 2000
+  })
+}
+
+function formatNumber (n) {
   const str = n.toString(){{#if_eq lintConfig "airbnb"}};{{/if_eq}}
   return str[1] ? str : `0${str}`{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
 }

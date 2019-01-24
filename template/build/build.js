@@ -1,6 +1,9 @@
 require('./check-versions')()
 
+// add nicklin
 process.env.NODE_ENV = 'production'
+process.env.ENV = 'build'
+
 process.env.PLATFORM = process.argv[process.argv.length - 1] || 'wx'
 
 var ora = require('ora')

@@ -1,7 +1,7 @@
 <template>
   <div class="container" @click="clickHandle('test click', $event)">
-
-    <div class="userinfo" @click="bindViewTap">
+    <span>当前store.state.count: \{{count}}</span>
+    <div class="userinfo">
       <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
       <div class="userinfo-nickname">
         <card :text="userInfo.nickName"></card>
@@ -20,6 +20,7 @@
     </form>
     {{#if vuex}}
     <a href="/pages/counter/main" class="counter">去往Vuex示例页面</a>
+    <div @click="$router.push('/counter')" class="counter">去往Vuex示例页面</div>
     {{/if}}
   </div>
 </template>
@@ -34,37 +35,27 @@ export default {
       userInfo: {}{{#if_eq lintConfig "airbnb"}},{{/if_eq}}
     }{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
   },
-
+  computed: {
+    count{{#unless_eq lintConfig "airbnb"}} {{/unless_eq}}() {
+      return this.$store.state.count{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
+    }{{#if_eq lintConfig "airbnb"}},{{/if_eq}}
+  },
   components: {
     card{{#if_eq lintConfig "airbnb"}},{{/if_eq}}
   },
+  onLoad () {
 
+  },
+  onShow () {
+
+  },
   methods: {
-    bindViewTap{{#unless_eq lintConfig "airbnb"}} {{/unless_eq}}() {
-      const url = '../logs/main'{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
-      wx.navigateTo({ url }){{#if_eq lintConfig "airbnb"}};{{/if_eq}}
-    },
-    getUserInfo{{#unless_eq lintConfig "airbnb"}} {{/unless_eq}}() {
-      // 调用登录接口
-      wx.login({
-        success: () => {
-          wx.getUserInfo({
-            success: (res) => {
-              this.userInfo = res.userInfo{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
-            }{{#if_eq lintConfig "airbnb"}},{{/if_eq}}
-          }){{#if_eq lintConfig "airbnb"}};{{/if_eq}}
-        }{{#if_eq lintConfig "airbnb"}},{{/if_eq}}
-      }){{#if_eq lintConfig "airbnb"}};{{/if_eq}}
-    },
     clickHandle{{#unless_eq lintConfig "airbnb"}} {{/unless_eq}}(msg, ev) {
       console.log('clickHandle:', msg, ev){{#if_eq lintConfig "airbnb"}};{{/if_eq}}
     }{{#if_eq lintConfig "airbnb"}},{{/if_eq}}
   },
 
-  created{{#unless_eq lintConfig "airbnb"}} {{/unless_eq}}() {
-    // 调用应用实例的方法获取全局数据
-    this.getUserInfo(){{#if_eq lintConfig "airbnb"}};{{/if_eq}}
-  }{{#if_eq lintConfig "airbnb"}},{{/if_eq}}
+  created{{#unless_eq lintConfig "airbnb"}} {{/unless_eq}}() {}{{#if_eq lintConfig "airbnb"}},{{/if_eq}}
 }{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
 </script>
 
