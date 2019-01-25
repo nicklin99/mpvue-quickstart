@@ -6,7 +6,7 @@ export const toast = (msg, options) => {
   })
 }
 
-export const modal = (title, content, options) => {
+export const modal = (title, content = '', options) => {
   return new Promise((resolve, reject) => {
     wx.showModal({
       title,
