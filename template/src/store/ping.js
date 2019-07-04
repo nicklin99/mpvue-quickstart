@@ -1,7 +1,5 @@
 import http from '../utils/http'
 
-http.unlock() // 只是为了测试
-
 export default {
   actions: {
     ping () {

@@ -27,7 +27,7 @@ fly.config.headers = {
   'X-Tag': 'flyio'
 }
 // 超时10s
-fly.config.timeout = 10000
+fly.config.timeout = 15000
 // 设置请求基地址
 fly.config.baseURL = apiSettings.baseUrl
 request.config.baseURL = apiSettings.baseUrl
@@ -45,8 +45,7 @@ function onRequest (config) {
       _multiFlag = true
     }
   }
-  console.log(`${config.method}发起请求：path:${config.url}，baseURL:${config.baseURL}`)
-  // console.log(`${config.method}发起请求：${csrfToken}`)
+  console.log(`${config.method}：path:${config.url}，baseURL:${config.baseURL}`)
   if (config.headers.test) {
     return config
   }
@@ -121,6 +120,6 @@ request.interceptors.request.use(function (config) {
   return config
 })
 // 不管怎么样，默认先锁上，后续请求会进入队列排队，解锁后会再执行队列请求
-fly.lock()
+// fly.lock()
 export default fly
 export { request }

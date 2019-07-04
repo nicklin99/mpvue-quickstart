@@ -54,6 +54,10 @@ module.exports = {
       "type": "confirm",
       "message": "Use ESLint to lint your code?"
     },
+    "sass": {
+      "type": "confirm",
+      "message": "是否使用sass,不使用默认less"
+    },
     // "lintConfig": {
     //   "when": "lint",
     //   "type": "list",

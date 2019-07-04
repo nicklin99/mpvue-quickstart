@@ -15,9 +15,12 @@ function resolve (dir) {
 }
 
 // add nicklin 对网络静态图片资源路径做处理
-const _publicPath = JSON.parse(config[process.env.ENV].env.staticUrl)
+
 function publicPath(file) {
-  return _publicPath + file
+  if (!process.env.basePublicPath) {
+    process.env.basePublicPath = JSON.parse(config[process.env.ENV].env.staticUrl)
+  }
+  return process.env.basePublicPath + file
 }
 // for mpvue-loader
 process.env.staticPublicPath = publicPath('')
