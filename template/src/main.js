@@ -10,11 +10,7 @@ import App from './App'{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
 Vue.config.productionTip = false{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
 App.mpType = 'app'{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
 App.store = store{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
-if (process.env.NODE_ENV!=='production') {
-  wx.setEnableDebug({
-    enableDebug: true
-  })
-}
+
 if (process.env.ENABLE_DEBUG) {
   wx.setEnableDebug({
     enableDebug: true
