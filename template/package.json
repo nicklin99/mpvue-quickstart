@@ -20,6 +20,7 @@
     "build:my": "node build/build.js my",
     "dev": "node build/dev-server.js wx",
     "start": "npm run dev",
+    "build:pro": "node build/build.js wx pro",
     "build": "node build/build.js wx"{{#unit}},
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run"{{/unit}}{{#e2e}},
     "e2e": "node test/e2e/runner.js"{{/e2e}}{{#if_or unit e2e}},

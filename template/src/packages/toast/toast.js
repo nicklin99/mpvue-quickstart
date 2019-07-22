@@ -22,3 +22,15 @@ export const modal = (title, content = '', options) => {
     })
   })
 }
+
+
+export const loading = (visible, title) => {
+  if (visible) {
+    wx.showLoading({
+      title: title || '加载中',
+      mask: true
+    })
+  } else {
+    wx.hideLoading()
+  }
+}

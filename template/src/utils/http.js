@@ -1,10 +1,13 @@
-import { apiSettings, toast } from './index'
+import { toast } from './index'
+import session from './session'
+import str from './string.config'
 const Fly = require('flyio/dist/npm/wx')
+const apiSettings = str.api
 
-// 不需要授权的接口
-const authUrl = apiSettings.authUrl
+// 登录接口
+const authUrl = apiSettings.loginUser
 // 授权令牌
-let csrfToken = ''
+let csrfToken = session.token
 let userId = 0
 let _multiFlag = false // post防重
 const isEnableMultiFlag = false // 是否启用全局POST防重
@@ -93,23 +96,26 @@ const onResponse = res => {
 fly.interceptors.response.use(onResponse,
   function (err) {
     console.log('err', err)
-    // 更新令牌
-    if (err.response.headers.token) {
-      csrfToken = err.response.headers.token[0]
+    
+    // 请求超时
+    if (err.status === 1) {
+      toast('请求超时，请稍后重试')
+    } else if (err.status === 0) {
+      toast('网络错误，请稍后重试')
+    } else {
+      toast(`网络错误:${err.status}，请稍后重试`)
+      if (err.status === 501) {
+        fly.lock()
+        request.get(apiSettings.refreshToken, { userId }).then(d => {
+          csrfToken = d.data.token
+          fly.unlock()
+        })
+      }
+      // 更新令牌
+      if (err.response.headers.token) {
+        csrfToken = err.response.headers.token[0]
+      }
     }
-
-    // Do something with request error
-    toast('网络错误，请稍后重试')
-
-    if (err.response.status === 501) {
-      fly.lock()
-      request.get(apiSettings.refreshTokenUrl, { userId }).then(d => {
-        csrfToken = d.data.token
-        fly.unlock()
-      })
-    }
-
-    return Promise.reject(err)
   }
 )
 request.interceptors.response.use(onResponse)
