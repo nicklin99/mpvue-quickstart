@@ -2,7 +2,6 @@
 import { getQueryString } from '../utils'
 
 const rootPath = 'pages'
-
 export default class Router {
   constructor () {
     this.current = {
@@ -13,11 +12,9 @@ export default class Router {
   }
 
   init (route) {
-    if (!this.current.to.basePath) {
-      this.current.to.basePath = route.path.replace(rootPath, '').replace('main', '')
-      this.current.to.path = route.path
-      this.current.to.query = route.query
-    }
+    this.current.to.basePath = route.path.replace(rootPath, '').replace('main', '')
+    this.current.to.path = route.path
+    this.current.to.query = route.query
   }
 
   changeTab (path) {
@@ -49,12 +46,12 @@ export default class Router {
   replace (path, success, fail, complete) {
     this.current.from = this.current.to
     this.current.to = {
-      path: '/' + this.url(path),
+      path: this.url(path),
       type: 'page'
     }
     this.current.to.basePath = this.current.to.path.replace(rootPath, '').replace('main', '')
     wx.redirectTo({
-      url: this.current.to.path,
+      url: '/' + this.current.to.path,
       success,
       fail,
       complete
@@ -69,7 +66,7 @@ export default class Router {
     }
     this.current.to.basePath = this.current.to.path.replace(rootPath, '').replace('main', '')
     wx.switchTab({
-      url: this.current.to.path,
+      url: '/' + this.current.to.path,
       success,
       fail,
       complete
@@ -97,7 +94,7 @@ export default class Router {
       }
       url = route.path.indexOf('?') > -1 ? route.path + '&' + getQueryString(route.query) : route.path + '?' + getQueryString(route.query)
     } else {
-      if (route.indexOf('/') !== 0) {
+      if (route.indexOf('/') !== 0 && route.indexOf('pages') !== 0) {
         url = this.current.to.basePath.replace(rootPath, '').replace('main', '') + route
       } else {
         url = route
