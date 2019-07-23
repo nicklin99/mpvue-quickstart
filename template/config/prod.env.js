@@ -1,4 +1,4 @@
-const type = process.argv[3]
+const type = process.argv[2]
 
 // 静态资源
 let staticUrl = '""'
