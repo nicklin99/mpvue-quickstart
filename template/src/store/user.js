@@ -53,15 +53,9 @@ const actions = {
   // 发送用户信息获取token
   loginClientUser (store, payload) {
     return http.post(str.api.loginUser, payload).then(({ data, token }) => {
-      // id (integer, optional): id ,
-      // img (string, optional): 头像 ,
-      // nick (string, optional): 昵称
-      const { id, img, nick } = data
+      // todo 登录后用户信息处理
       return {
         user: {
-          id,
-          nickname: nick,
-          avatar: img
         },
         token
       }

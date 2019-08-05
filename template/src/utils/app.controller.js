@@ -5,23 +5,15 @@ import { router } from '../packages/router'
 
 
 const tasks = {
-  isLogin(callback) {
-    // 是否登录
-    store.dispatch('isLogin').then(loginSuccess => {
-      if (loginSuccess) {
-        // 来自小程序唤起
-        // todo 从缓存中读取用户信息
-        callback()
-      } else {
-        store.dispatch('isGrantAuth').then(() => {
-          store.dispatch('loginApp').then(callback)
-        }).catch(() => {
-          router.replace('/auth')
-          /* eslint-disable */
-          callback('login.auth')
-        })
-      }
-    })
+  async isLogin(callback) {
+    const isAuth = await store.dispatch('isGrantAuth')
+    const isLogin = await store.dispatch('isLogin')
+
+    if (!isAuth && isLogin) {
+      await store.dispatch('loginApp')
+    }
+
+    callback()
   },
   complete(callback) {
     console.log('runTask.complete.route',router.current.to.path);

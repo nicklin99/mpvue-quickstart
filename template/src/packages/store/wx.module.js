@@ -7,11 +7,11 @@ const actions = {
       wx.getSetting({
         success (res) {
           if (res.authSetting[key]) {
-            resolve()
+            resolve(true)
           } else {
             const msg = 'need grant auth'
             console.error(msg)
-            reject(new Error(msg))
+            resolve(false)
           }
         }
       })
