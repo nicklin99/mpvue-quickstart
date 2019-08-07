@@ -26,7 +26,11 @@ Vue.prototype.onload = function (callback) {
   q.push({name: 'complete', page})
   q.drain(() => {
     console.log(`queue.alldone.${page}`)
-    callback && callback()
+    // 1908 nicklin fix释放掉
+    if (callback) {
+      callback()
+      callback = null
+    }
   })
 }
 
