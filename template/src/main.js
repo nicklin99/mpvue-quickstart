@@ -6,7 +6,8 @@ import Vue from 'vue'{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
 import './packages'{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
 import store from './store'{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
 import App from './App'{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
-
+import {router} from './packages/router'
+          
 Vue.config.productionTip = false{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
 App.mpType = 'app'{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
 App.store = store{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
@@ -30,4 +31,6 @@ Vue.prototype.onload = function (callback) {
 }
 
 const app = new Vue(App)
+// nicklin 1908 路由引用下全局app
+router.app = app
 app.$mount()

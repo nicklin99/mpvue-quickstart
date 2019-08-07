@@ -3,7 +3,6 @@ import queue from 'async-es/queue'
 import store from '../store'
 import { router } from '../packages/router'
 
-
 const tasks = {
   async isLogin(callback) {
     const isAuth = await store.dispatch('isGrantAuth')
@@ -30,7 +29,8 @@ const tasks = {
 
 const q = queue((task, callback) => {
   console.log('queue.workder.runTask', task)
-  tasks[task.name](callback)
+  const {name,...params} = task
+  tasks[task.name](callback, params)
 })
 
 q.error((err, task) => {

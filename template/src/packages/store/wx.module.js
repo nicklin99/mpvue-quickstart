@@ -1,5 +1,6 @@
 const scopes = {
-  writePhotosAlbum: 'scope.writePhotosAlbum'
+  writePhotosAlbum: 'scope.writePhotosAlbum',
+  address: 'scope.address',
 }
 const actions = {
   wxGetAuthSetting({ commit }, key) {
@@ -48,7 +49,7 @@ const actions = {
       })
     })
   },
-  async wxCheckSession() {
+  wxCheckSession() {
     return new Promise((resolve) => {
       wx.checkSession({
         success() {
@@ -62,6 +63,7 @@ const actions = {
     })
   },
   async wxlogin({ dispatch }) {
+    // nicklin 1908 登录未过期不重新获取code
     const isSessionActive = await dispatch('wxCheckSession')
     if (isSessionActive) {
       return null
@@ -131,7 +133,6 @@ const actions = {
             wx.authorize({
               scope: scopes.writePhotosAlbum,
               success() {
-                // 用户已经同意小程序使用录音功能，后续调用 wx.startRecord 接口不会弹窗询问
                 wx.saveImageToPhotosAlbum({
                   filePath,
                   success: resolve,
@@ -159,9 +160,9 @@ const actions = {
     return new Promise((resolve, reject) => {
       wx.getSetting({
         success(res) {
-          if (!res.authSetting['scope.address']) {
+          if (!res.authSetting[scopes.address]) {
             wx.authorize({
-              scope: 'scope.address',
+              scope: scopes.address,
               success() {
                 // 用户已经同意小程序使用获取地址功能，后续调用 wx.chooseAddress 接口不会弹窗询问
                 wx.chooseAddress({
