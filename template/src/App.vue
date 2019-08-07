@@ -23,6 +23,8 @@ export default {
       {{/if}}
     ],
     window: {
+      navigationBarTitleText: '小程序标题',
+      pageOrientation: 'portrait',
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
