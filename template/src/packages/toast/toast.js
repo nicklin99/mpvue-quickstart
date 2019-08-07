@@ -23,7 +23,6 @@ export const modal = (title, content = '', options) => {
   })
 }
 
-
 export const loading = (visible, title) => {
   if (visible) {
     wx.showLoading({
