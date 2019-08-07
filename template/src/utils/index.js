@@ -6,4 +6,3 @@ export const toast = title => {
     duration: 2000
   })
 }
-

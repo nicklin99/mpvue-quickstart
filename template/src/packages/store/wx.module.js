@@ -1,12 +1,12 @@
 const scopes = {
   writePhotosAlbum: 'scope.writePhotosAlbum',
-  address: 'scope.address',
+  address: 'scope.address'
 }
 const actions = {
-  wxGetAuthSetting({ commit }, key) {
+  wxGetAuthSetting ({ commit }, key) {
     return new Promise((resolve, reject) => {
       wx.getSetting({
-        success(res) {
+        success (res) {
           if (res.authSetting[key]) {
             resolve(true)
           } else {
@@ -22,7 +22,7 @@ const actions = {
    * 是否带上登录态信息。当 withCredentials 为 true 时，要求此前有调用过 wx.login 且登录态尚未过期，此时返回的数据会包含 encryptedData, iv 等敏感信息；
    * 当 withCredentials 为 false 时，不要求有登录态，返回的数据不包含 encryptedData, iv 等敏感信息。
    */
-  getWxUserInfo({ commit, dispatch }, payload) {
+  getWxUserInfo ({ commit, dispatch }, payload) {
     const withCredentials = !!payload
     const lang = 'zh_CN'
     return new Promise(resolve => {
@@ -49,20 +49,20 @@ const actions = {
       })
     })
   },
-  wxCheckSession() {
+  wxCheckSession () {
     return new Promise((resolve) => {
       wx.checkSession({
-        success() {
+        success () {
           // session_key 未过期，并且在本生命周期一直有效
           resolve(true)
         },
-        fail() {
+        fail () {
           resolve(false)
         }
       })
     })
   },
-  async wxlogin({ dispatch }) {
+  async wxlogin ({ dispatch }) {
     // nicklin 1908 登录未过期不重新获取code
     const isSessionActive = await dispatch('wxCheckSession')
     if (isSessionActive) {
@@ -81,11 +81,11 @@ const actions = {
       })
     })
   },
-  wxDownloadFile(store, url) {
+  wxDownloadFile (store, url) {
     return new Promise((resolve, reject) => {
       wx.downloadFile({
         url,
-        success(res) {
+        success (res) {
           // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
           if (res.statusCode === 200) {
             resolve(res.tempFilePath)
@@ -96,7 +96,7 @@ const actions = {
       })
     })
   },
-  wxGetImageData({ dispatch }, src) {
+  wxGetImageData ({ dispatch }, src) {
     if (typeof src === 'string') {
       return new Promise((resolve, reject) => {
         wx.getImageInfo({
@@ -111,7 +111,7 @@ const actions = {
       }))
     }
   },
-  wxCanvasToTempFilePath(store, options) {
+  wxCanvasToTempFilePath (store, options) {
     if (!options) {
       options = {}
     }
@@ -125,14 +125,14 @@ const actions = {
       })
     })
   },
-  wxSaveImageToPhotosAlbum(store, filePath) {
+  wxSaveImageToPhotosAlbum (store, filePath) {
     return new Promise((resolve, reject) => {
       wx.getSetting({
-        success(res) {
+        success (res) {
           if (!res.authSetting[scopes.writePhotosAlbum]) {
             wx.authorize({
               scope: scopes.writePhotosAlbum,
-              success() {
+              success () {
                 wx.saveImageToPhotosAlbum({
                   filePath,
                   success: resolve,
@@ -156,14 +156,14 @@ const actions = {
       })
     })
   },
-  wxGetAddress(store) {
+  wxGetAddress (store) {
     return new Promise((resolve, reject) => {
       wx.getSetting({
-        success(res) {
+        success (res) {
           if (!res.authSetting[scopes.address]) {
             wx.authorize({
               scope: scopes.address,
-              success() {
+              success () {
                 // 用户已经同意小程序使用获取地址功能，后续调用 wx.chooseAddress 接口不会弹窗询问
                 wx.chooseAddress({
                   success: resolve,
@@ -186,7 +186,7 @@ const actions = {
       })
     })
   },
-  tabBar({ commit }, bool) {
+  tabBar ({ commit }, bool) {
     commit('tabBar', bool)
     if (bool) {
       wx.showTabBar()
@@ -202,10 +202,10 @@ const state = {
 }
 
 const mutations = {
-  system(state, system) {
+  system (state, system) {
     Object.assign(state.system, system)
   },
-  tabBar(state, bool) {
+  tabBar (state, bool) {
     state.tabBar = bool
   }
 }

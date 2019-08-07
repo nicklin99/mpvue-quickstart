@@ -4,6 +4,6 @@ export default {
     loginUser: '',
     expireDay: 7,
     refreshToken: '',
-    baseUrl: process.env.baseUrl,
+    baseUrl: process.env.baseUrl
   }
 }
