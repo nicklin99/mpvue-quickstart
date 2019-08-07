@@ -7,6 +7,7 @@ import './packages'{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
 import store from './store'{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
 import App from './App'{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
 import {router} from './packages/router'
+import q from './utils/app.controller'
           
 Vue.config.productionTip = false{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
 App.mpType = 'app'{{#if_eq lintConfig "airbnb"}};{{/if_eq}}
