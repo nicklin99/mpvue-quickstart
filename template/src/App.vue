@@ -27,7 +27,6 @@ export default {
       pageOrientation: 'portrait',
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black'
     },
     tabBar: {
