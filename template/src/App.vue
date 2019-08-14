@@ -66,6 +66,7 @@ export default {
 
     const { scene } = options
     q.scene = scene
+    q.push({name:'isLogin'})
   }
 }
 </script>

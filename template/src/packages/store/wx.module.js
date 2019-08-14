@@ -31,7 +31,7 @@ const actions = {
         lang,
         success: res => {
           console.log('[已授权]wx.getUserInfo.获取用户信息', res)
-          commit('loginWxUser', res.userInfo)
+          commit('setUser', res.userInfo)
 
           // 获取openid
           if (withCredentials) {
@@ -64,10 +64,10 @@ const actions = {
   },
   async wxlogin ({ dispatch }) {
     // nicklin 1908 登录未过期不重新获取code
-    const isSessionActive = await dispatch('wxCheckSession')
-    if (isSessionActive) {
-      return null
-    }
+    // const isSessionActive = await dispatch('wxCheckSession')
+    // if (isSessionActive) {
+    //   return null
+    // }
     return new Promise((resolve, reject) => {
       wx.login({
         success: res => {

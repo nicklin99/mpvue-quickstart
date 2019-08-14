@@ -10,18 +10,22 @@ const state = {
 }
 
 const mutations = {
-  setUser (state, user) {
+  updateUser(state, user) {
     for (const key in user) {
-      if (user.hasOwnProperty(key)) {
-        state[key] = user[key]
-      }
+      state[key] = user[key]
     }
+  },
+  setUser(state, user) {
+    for (const key in user) {
+      state[key] = user[key]
+    }
+    session.user = state
   }
 }
 
 const actions = {
   // 是否需要登录
-  isLogin () {
+  isLogin() {
     if (session.isExpire()) {
       return false
     }
@@ -30,28 +34,22 @@ const actions = {
       return false
     }
 
-    if (!session.getUser()) {
+    if (!session.user) {
       return false
     }
     return true
   },
-  getSessionUser () {
-    const user = session.getUser()
-    this.commit('setUser', user)
-  },
-  getUser () {
+  getUser() {
     return http.get(str.api.userInfo).then(({ data }) => {
       //todo 用户信息
-      const {} = data
       const user = {
       }
       this.commit('setUser', user)
-      session.setUser(user)
       return user
     })
   },
   // 发送用户信息获取token
-  loginClientUser (store, payload) {
+  loginClientUser(store, payload) {
     return http.post(str.api.loginUser, payload).then(({ data, token }) => {
       // todo 登录后用户信息处理
       return {
@@ -61,28 +59,20 @@ const actions = {
       }
     })
   },
-  loginApp ({ dispatch, commit }, data) {
+  loginApp({ dispatch, commit }, data) {
     const wxLogin = callback => {
       dispatch('wxlogin').then(code => {
-        if (data) {
-          callback(null, {
-            code,
-            ...data
+        dispatch('getWxUserInfo', true)
+          .then(res => {
+            callback(null, {
+              code,
+              ...res
+            })
           })
-        } else {
-          dispatch('getWxUserInfo', true)
-            .then(res => {
-              // callback(new Error('loginFail'))
-              callback(null, {
-                code,
-                ...res
-              })
-            })
-            .catch(err => {
-              callback(err)
-              // 这里最好提示下，要完成授权才能进行下一步
-            })
-        }
+          .catch(err => {
+            callback(err)
+            // 这里最好提示下，要完成授权才能进行下一步
+          })
       })
     }
 
@@ -108,14 +98,15 @@ const actions = {
           }
           const { user, token } = result
           commit('setUser', user)
-          session.saveUser(user, token)
+          session.token = token
+          session.set('isAuth', true, false)
           resolve()
         }
       )
     })
   },
   // 是否授权用户信息
-  isGrantAuth ({ dispatch }) {
+  isGrantAuth({ dispatch }) {
     return dispatch('wxGetAuthSetting', 'scope.userInfo')
   }
 }

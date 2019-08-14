@@ -2,11 +2,19 @@
 import queue from 'async-es/queue'
 import store from '../store'
 import { router } from '../packages/router'
+import Session from './session'
 
 const tasks = {
   async isLogin(callback) {
     const isAuth = await store.dispatch('isGrantAuth')
+    Session.set('isAuth', isAuth, false)
     const isLogin = await store.dispatch('isLogin')
+
+    console.log(`isAuth:${isAuth} isLogin:${isLogin}`)
+
+    if (isAuth && isLogin) {
+      store.commit('updateUser', Session.user)
+    }
 
     if (!isAuth && isLogin) {
       await store.dispatch('loginApp')
